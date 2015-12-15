@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="110dp"
+    android:background="#AAAAAAAA">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="#33AAAAAA">
+
+        <TextView
+            android:id="@+id/move"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:text="TODO: move"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:alpha=".1"
+            android:src="@drawable/close_icon" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:id="@+id/ban"
+            android:layout_width="120dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:background="#AAFFFFFF"
+            android:text="Reject and Ban"
+            android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/record"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:visibility="invisible"
+            android:layout_toRightOf="@id/ban"
+            android:background="#AAFFFFFF"
+            android:text="Record"
+            android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/note"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="50dp"
+            android:background="#AAFFFFFF"
+            android:text="TODO: Note"
+            android:textColor="#000000" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
