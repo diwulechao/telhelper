@@ -1,11 +1,13 @@
 package com.wudi.telhelper;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.io.IOException;
 
@@ -17,6 +19,7 @@ public class OverlayView extends RelativeLayout {
     private String number;
     private Button banButton, recordButton, noteButton;
     private ImageView closeButton;
+    private TextView noteView;
 
     public OverlayView(Context context, final String number) {
         super(context);
@@ -27,12 +30,13 @@ public class OverlayView extends RelativeLayout {
         recordButton = (Button) this.findViewById(R.id.record);
         noteButton = (Button) this.findViewById(R.id.note);
         closeButton = (ImageView) this.findViewById(R.id.close);
+        noteView = (TextView) this.findViewById(R.id.notetext);
 
         banButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 ViewUtils.rejectCall();
-                StorageHelper.banNumber(OverlayView.this.number);
+                StorageHelper.banNumber(OverlayView.this.number,true);
             }
         });
 
@@ -47,6 +51,21 @@ public class OverlayView extends RelativeLayout {
             @Override
             public void onClick(View v) {
                 ViewUtils.startRecord(number);
+            }
+        });
+
+        Contact contact = StorageHelper.getContact(number);
+        if (contact != null && contact.note != null)
+            noteView.setText(contact.note.get(contact.note.size() - 1));
+
+        noteButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainApplication.context, NoteActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("number",number);
+                MainApplication.context.startActivity(intent);
+                ViewUtils.removeOverlay(MainApplication.context);
             }
         });
     }

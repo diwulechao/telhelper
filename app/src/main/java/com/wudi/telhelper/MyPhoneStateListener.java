@@ -1,6 +1,7 @@
 package com.wudi.telhelper;
 
 import android.telephony.PhoneStateListener;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
@@ -8,6 +9,7 @@ public class MyPhoneStateListener extends PhoneStateListener {
     @Override
     public void onCallStateChanged(int state, String incomingNumber) {
         Log.d("MyPhoneListener", state + "   incoming no:" + incomingNumber);
+        if (TextUtils.isEmpty(incomingNumber)) return;
 
         Contact contact = StorageHelper.getContact(incomingNumber);
         if (contact.ban) ViewUtils.rejectCall();
@@ -15,6 +17,7 @@ public class MyPhoneStateListener extends PhoneStateListener {
             if (state == 1) ViewUtils.createOverlay(MainApplication.context, incomingNumber);
             else if (state == 0) {
                 ViewUtils.stopRecord();
+                if (OverlayView.Instance != null) OverlayView.Instance.setRecordVisible(false);
                 MainApplication.handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -22,7 +25,10 @@ public class MyPhoneStateListener extends PhoneStateListener {
                     }
                 }, 5000);
             } else if (state == 2) {
-                ViewUtils.setAnswered();
+                if (contact.alwaysRecord) ViewUtils.startRecord(incomingNumber);
+                else {
+                    ViewUtils.setAnswered();
+                }
             }
         }
     }

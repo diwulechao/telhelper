@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,10 +50,18 @@ public class StorageHelper {
         commit();
     }
 
-    public static void banNumber(String number) {
+    public static void banNumber(String number, boolean ban) {
         Contact contact = map.get(number);
         if (contact == null) contact = new Contact();
-        contact.ban = true;
+        contact.ban = ban;
+        map.put(number, contact);
+        commit();
+    }
+
+    public static void recordNumber(String number, boolean record) {
+        Contact contact = map.get(number);
+        if (contact == null) contact = new Contact();
+        contact.alwaysRecord = record;
         map.put(number, contact);
         commit();
     }
@@ -65,5 +74,28 @@ public class StorageHelper {
         }
 
         return contact;
+    }
+
+    public static void addNote(String number, String note) {
+        Contact contact = map.get(number);
+        if (contact == null) {
+            contact = new Contact();
+            map.put(number, contact);
+        }
+
+        if (contact.note == null) contact.note = new ArrayList<>();
+        contact.note.add(note);
+        commit();
+    }
+
+    public static void setTag(String number, String tag) {
+        Contact contact = map.get(number);
+        if (contact == null) {
+            contact = new Contact();
+            map.put(number, contact);
+        }
+
+        contact.tag = tag;
+        commit();
     }
 }

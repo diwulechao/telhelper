@@ -45,22 +45,31 @@
             android:layout_width="60dp"
             android:layout_height="30dp"
             android:layout_margin="10dp"
-            android:visibility="invisible"
             android:layout_toRightOf="@id/ban"
             android:background="#AAFFFFFF"
             android:text="Record"
-            android:textColor="#000000" />
+            android:textColor="#000000"
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/note"
-            android:layout_width="100dp"
+            android:layout_width="50dp"
             android:layout_height="30dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="50dp"
             android:background="#AAFFFFFF"
-            android:text="TODO: Note"
+            android:text="Note"
             android:textColor="#000000" />
 
+        <TextView
+            android:id="@+id/notetext"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="50dp"
+            android:layout_toRightOf="@id/note"
+            android:gravity="center_vertical"
+            android:textColor="#000000" />
     </RelativeLayout>
 
 </RelativeLayout>

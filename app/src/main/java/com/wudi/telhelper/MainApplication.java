@@ -22,14 +22,12 @@ public class MainApplication extends Application {
 
         StorageHelper.init();
 
-        MyPhoneStateListener phoneReceiver = new MyPhoneStateListener();
         TelephonyManager tmgr = (TelephonyManager) context
                 .getSystemService(Context.TELEPHONY_SERVICE);
-
-        //Create Listner
         MyPhoneStateListener PhoneListener = new MyPhoneStateListener();
-
-        // Register listener for LISTEN_CALL_STATE
         tmgr.listen(PhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+
+//        StorageHelper.addNote("123","hello world");
+//        ViewUtils.createOverlay(context,"123");
     }
 }
