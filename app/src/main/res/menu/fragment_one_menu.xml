@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/tag_all"
+        android:title="Show all"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/tag_family"
+        android:title="Filter by: Family and Friend"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/tag_market"
+        android:title="Filter by: Telemarketing"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/tag_delivery"
+        android:title="Filter by: Delivery"
+        app:showAsAction="never" />
+</menu>

@@ -2,6 +2,7 @@ package com.wudi.telhelper;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -9,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.io.IOException;
+import com.wudi.telhelper.activity.NoteActivity;
 
 /**
  * Created by wudi on 12/15/2015.
@@ -36,7 +37,11 @@ public class OverlayView extends RelativeLayout {
             @Override
             public void onClick(View v) {
                 ViewUtils.rejectCall();
-                StorageHelper.banNumber(OverlayView.this.number,true);
+                StorageHelper.banNumber(OverlayView.this.number, true);
+
+                banButton.setEnabled(false);
+                banButton.setTextColor(Color.GRAY);
+                banButton.setText("Baned");
             }
         });
 
@@ -56,14 +61,14 @@ public class OverlayView extends RelativeLayout {
 
         Contact contact = StorageHelper.getContact(number);
         if (contact != null && contact.note != null)
-            noteView.setText(contact.note.get(contact.note.size() - 1));
+            noteView.setText(Contact.getNote(contact.note, contact.note.size() - 1).first);
 
         noteButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainApplication.context, NoteActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("number",number);
+                intent.putExtra("number", number);
                 MainApplication.context.startActivity(intent);
                 ViewUtils.removeOverlay(MainApplication.context);
             }

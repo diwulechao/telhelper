@@ -1,77 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/num_text"
-        android:layout_width="wrap_content"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbarlayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="123" />
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_below="@id/appbarlayout"
+        android:orientation="vertical">
 
-        <CheckBox
-            android:id="@+id/check_ban"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ban this number" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <CheckBox
-            android:id="@+id/check_record"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Always Record" />
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Notes:" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical">
-
-        <EditText
-            android:id="@+id/edit_note"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="100dp" />
+            android:layout_marginLeft="5dp"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/add_note"
-            android:layout_width="80dp"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:text="Tag:" />
+
+            <Spinner
+                android:id="@+id/spinner_tag"
+                style="@style/mySpinnerStyle"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="Add" />
-    </RelativeLayout>
+            android:layout_marginLeft="5dp"
+            android:text="Notes:" />
 
-    <TextView
-        android:id="@+id/all_notes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true"
+            android:gravity="center_vertical">
 
-    <!--<Button-->
-        <!--android:id="@+id/button_save"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Save and Exit" />-->
-</LinearLayout>
+            <EditText
+                android:id="@+id/edit_note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="100dp" />
+
+            <Button
+                android:id="@+id/add_note"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dp"
+                android:text="Add" />
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/myrecyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" />
+
+    </LinearLayout>
+</RelativeLayout>

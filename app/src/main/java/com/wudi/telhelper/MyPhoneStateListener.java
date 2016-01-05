@@ -3,12 +3,12 @@ package com.wudi.telhelper;
 import android.telephony.PhoneStateListener;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 
 public class MyPhoneStateListener extends PhoneStateListener {
     @Override
     public void onCallStateChanged(int state, String incomingNumber) {
         Log.d("MyPhoneListener", state + "   incoming no:" + incomingNumber);
+        incomingNumber = ViewUtils.normalizeNumber(incomingNumber);
         if (TextUtils.isEmpty(incomingNumber)) return;
 
         Contact contact = StorageHelper.getContact(incomingNumber);
@@ -23,7 +23,7 @@ public class MyPhoneStateListener extends PhoneStateListener {
                     public void run() {
                         ViewUtils.removeOverlay(MainApplication.context);
                     }
-                }, 5000);
+                }, 10000);
             } else if (state == 2) {
                 if (contact.alwaysRecord) ViewUtils.startRecord(incomingNumber);
                 else {

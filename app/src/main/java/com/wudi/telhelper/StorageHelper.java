@@ -1,16 +1,15 @@
 package com.wudi.telhelper;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by wudi on 12/15/2015.
@@ -25,6 +24,7 @@ public class StorageHelper {
             map = (HashMap) inputStream.readObject();
             inputStream.close();
             input.close();
+
             Log.d("hello", "read complete");
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,13 +70,15 @@ public class StorageHelper {
         Contact contact = map.get(number);
         if (contact == null) {
             contact = new Contact();
-            map.put(number, contact);
         }
 
         return contact;
     }
 
     public static void addNote(String number, String note) {
+        if (TextUtils.isEmpty(note) || TextUtils.isEmpty(number)) return;
+        note ="@#" + System.currentTimeMillis() + "@#" + note;
+
         Contact contact = map.get(number);
         if (contact == null) {
             contact = new Contact();
@@ -98,4 +100,5 @@ public class StorageHelper {
         contact.tag = tag;
         commit();
     }
+
 }

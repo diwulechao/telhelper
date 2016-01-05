@@ -2,10 +2,9 @@ package com.wudi.telhelper;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.IntentFilter;
+import android.os.Handler;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
-import android.os.Handler;
 
 /**
  * Created by wudi on 12/15/2015.

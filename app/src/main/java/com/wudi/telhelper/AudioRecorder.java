@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class AudioRecorder {
 
-    final MediaRecorder recorder = new MediaRecorder();
+    private MediaRecorder recorder = new MediaRecorder();
     final String path;
 
     /**
@@ -48,7 +48,20 @@ public class AudioRecorder {
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         recorder.setOutputFile(path);
         recorder.prepare();
-        recorder.start();
+        try {
+            recorder.start();
+        }
+        catch (Exception e) {
+            recorder.release();
+
+            recorder = new MediaRecorder();
+            recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+            recorder.setOutputFile(path);
+            recorder.prepare();
+            recorder.start();
+        }
     }
 
     /**

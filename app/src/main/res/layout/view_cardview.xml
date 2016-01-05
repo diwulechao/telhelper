@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="85dp">
+    <!-- A CardView that contains a TextView -->
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:foreground="@drawable/card_foreground"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardElevation="2dp"
+        card_view:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/info_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:text="18600945505"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/note_text_card"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginLeft="11dp"
+                android:layout_marginTop="35dp"
+                android:gravity="center_vertical"
+                android:singleLine="true" />
+
+            <TextView
+                android:id="@+id/note_text_card_time"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_below="@id/note_text_card"
+                android:layout_marginLeft="11dp"
+                android:gravity="center_vertical"
+                android:singleLine="true" />
+
+
+            <ImageView
+                android:id="@+id/ban_icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:alpha="0.54"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ban" />
+
+            <ImageView
+                android:id="@+id/record_icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@id/ban_icon"
+                android:alpha="0.54"
+                android:scaleType="fitCenter"
+                android:src="@drawable/recorder" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>

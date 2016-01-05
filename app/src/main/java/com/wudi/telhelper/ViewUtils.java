@@ -1,18 +1,27 @@
 package com.wudi.telhelper;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Binder;
+import android.os.Environment;
 import android.os.IBinder;
-import android.telephony.TelephonyManager;
-import android.util.Log;
+import android.provider.ContactsContract;
+import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Created by wudi on 12/15/2015.
@@ -106,5 +115,68 @@ public class ViewUtils {
 
             audioRecorder = null;
         }
+    }
+
+    public static HashMap<String, ArrayList<String>> getRecords() {
+        HashMap<String, ArrayList<String>> ret = new HashMap<>();
+        try {
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/record";
+
+            File f = new File(path);
+            File file[] = f.listFiles();
+            if (file != null) {
+                for (int i = 0; i < file.length; i++) {
+                    String[] sa = file[i].getName().split("_");
+                    if (ret.get(sa[0]) == null) {
+                        ret.put(sa[0], new ArrayList<String>());
+                    }
+
+                    ret.get(sa[0]).add(file[i].getName());
+                }
+            }
+
+            return ret;
+        } catch (Exception e) {
+            return ret;
+        }
+    }
+
+    public static float dipToPixels(float dipValue) {
+        DisplayMetrics metrics = MainApplication.context.getResources().getDisplayMetrics();
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, metrics);
+    }
+
+    public static String normalizeNumber(String number) {
+        if (TextUtils.isEmpty(number)) return number;
+        if (number.indexOf("+86") == 0) return number.substring(3);
+        return number;
+    }
+
+    public static String getContactName(Context context, String phoneNumber) {
+        ContentResolver cr = context.getContentResolver();
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
+        Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
+        if (cursor == null) {
+            return null;
+        }
+        String contactName = null;
+        if (cursor.moveToFirst()) {
+            contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
+        }
+
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
+
+        return contactName;
+    }
+
+    public static String getFriendName(Context context, String phoneNumber) {
+        if (TextUtils.isEmpty(phoneNumber)) return phoneNumber;
+        String fname = getContactName(context, phoneNumber);
+        if (!TextUtils.isEmpty(fname)) {
+            return fname + " (" + phoneNumber + ')';
+        }
+        return phoneNumber;
     }
 }
