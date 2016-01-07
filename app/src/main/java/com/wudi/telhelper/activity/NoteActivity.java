@@ -216,7 +216,7 @@ public class NoteActivity extends AppCompatActivity {
 
     public void setNotes(Contact contact) {
         myRecyclerViewAdapter.notes = contact.note;
-        myRecyclerViewAdapter.selected = new boolean[contact.note.size()];
+        myRecyclerViewAdapter.selected = new boolean[contact.note == null ? 0 : contact.note.size()];
         myRecyclerViewAdapter.notifyDataSetChanged();
     }
 }
