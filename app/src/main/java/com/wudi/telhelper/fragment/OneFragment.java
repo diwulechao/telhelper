@@ -1,5 +1,6 @@
 package com.wudi.telhelper.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,7 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.wudi.telhelper.MainApplication;
 import com.wudi.telhelper.R;
+import com.wudi.telhelper.activity.DebugPage;
+import com.wudi.telhelper.activity.NoteActivity;
 import com.wudi.telhelper.adapter.MyListAdapter;
 
 /**
@@ -79,6 +83,11 @@ public class OneFragment extends Fragment {
             case R.id.tag_delivery:
                 tag = "delivery";
                 if (mAdapter != null) mAdapter.refresh(tag);
+                return true;
+            case R.id.button_debugpage:
+                Intent intent = new Intent(MainApplication.context, DebugPage.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -20,4 +20,10 @@
         android:id="@+id/tag_delivery"
         android:title="Filter by: Delivery"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/button_debugpage"
+        android:title="Debug page"
+        app:showAsAction="never" />
+
 </menu>
