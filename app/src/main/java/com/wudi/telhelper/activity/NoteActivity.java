@@ -1,6 +1,9 @@
 package com.wudi.telhelper.activity;
 
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +25,9 @@ import com.wudi.telhelper.R;
 import com.wudi.telhelper.StorageHelper;
 import com.wudi.telhelper.adapter.NoteAdapter;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class NoteActivity extends AppCompatActivity {
     private EditText editText;
     private Button addButton;
@@ -29,6 +35,8 @@ public class NoteActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private String number;
     private Contact contact;
+    private boolean editMode;
+    private MenuItem deleteItem;
 
     private String[] tagNames = {"None", "Family and Friend", "Telemarketing", "Delivery"};
     private String[] tagTypes = {null, "family", "market", "delivery"};
@@ -41,7 +49,7 @@ public class NoteActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                onBackPressed();
                 return true;
             case R.id.ban_check:
                 item.setChecked(!item.isChecked());
@@ -50,6 +58,9 @@ public class NoteActivity extends AppCompatActivity {
             case R.id.record_check:
                 item.setChecked(!item.isChecked());
                 StorageHelper.recordNumber(number, item.isChecked());
+                return true;
+            case R.id.button_delete:
+                deleteNote();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -60,6 +71,7 @@ public class NoteActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.note_activity_menu, menu);
+        deleteItem = menu.findItem(R.id.button_delete);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -69,6 +81,22 @@ public class NoteActivity extends AppCompatActivity {
         if (contact.alwaysRecord) menu.findItem(R.id.record_check).setChecked(true);
 
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    private void deleteNote() {
+        if (contact.note != null) {
+            ArrayList<String> array = new ArrayList<>();
+            for (int i = 0; i < contact.note.size(); i++) {
+                if (!myRecyclerViewAdapter.selected[i]) array.add(contact.note.get(i));
+            }
+
+            contact.note = array;
+            StorageHelper.map.put(number, contact);
+            StorageHelper.commit();
+            setNotes(contact);
+        }
+
+        exitEditMode();
     }
 
     @Override
@@ -87,17 +115,53 @@ public class NoteActivity extends AppCompatActivity {
         addButton = (Button) this.findViewById(R.id.add_note);
 
         staggeredGridLayoutManagerVertical =
-                new StaggeredGridLayoutManager(
-                        2, //The number of Columns in the grid
+                new StaggeredGridLayoutManager(2,
                         LinearLayoutManager.VERTICAL);
 
         myRecyclerView = (RecyclerView) findViewById(R.id.myrecyclerview);
         myRecyclerViewAdapter = new NoteAdapter();
+        myRecyclerViewAdapter.editModeListener = new NoteAdapter.EditModeListener() {
+            @Override
+            public void enter() {
+                enterEditMode();
+            }
+
+            @Override
+            public boolean isEditMode() {
+                return editMode;
+            }
+
+            @Override
+            public void exit() {
+                exitEditMode();
+            }
+        };
+
         myRecyclerView.setAdapter(myRecyclerViewAdapter);
         myRecyclerView.setLayoutManager(staggeredGridLayoutManagerVertical);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.simple_spinner_item, tagNames);
         spinner.setAdapter(adapter);
+    }
+
+    private void enterEditMode() {
+        editMode = true;
+        deleteItem.setVisible(true);
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(ContextCompat.getColor(NoteActivity.this, R.color.grey));
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(NoteActivity.this, R.color.grey)));
+        }
+    }
+
+    private void exitEditMode() {
+        editMode = false;
+        deleteItem.setVisible(false);
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(ContextCompat.getColor(NoteActivity.this, R.color.colorPrimary));
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(NoteActivity.this, R.color.colorPrimary)));
+        }
+
+        myRecyclerViewAdapter.exitEditMode();
     }
 
     @Override
@@ -143,11 +207,16 @@ public class NoteActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        finish();
+        if (editMode) {
+            exitEditMode();
+        } else {
+            finish();
+        }
     }
 
     public void setNotes(Contact contact) {
         myRecyclerViewAdapter.notes = contact.note;
+        myRecyclerViewAdapter.selected = new boolean[contact.note.size()];
         myRecyclerViewAdapter.notifyDataSetChanged();
     }
 }

@@ -77,7 +77,7 @@ public class StorageHelper {
 
     public static void addNote(String number, String note) {
         if (TextUtils.isEmpty(note) || TextUtils.isEmpty(number)) return;
-        note ="@#" + System.currentTimeMillis() + "@#" + note;
+        note = "@#" + System.currentTimeMillis() + "@#" + note;
 
         Contact contact = map.get(number);
         if (contact == null) {
@@ -86,7 +86,7 @@ public class StorageHelper {
         }
 
         if (contact.note == null) contact.note = new ArrayList<>();
-        contact.note.add(note);
+        contact.note.add(0, note);
         commit();
     }
 

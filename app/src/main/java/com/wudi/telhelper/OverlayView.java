@@ -61,7 +61,7 @@ public class OverlayView extends RelativeLayout {
 
         Contact contact = StorageHelper.getContact(number);
         if (contact != null && contact.note != null)
-            noteView.setText(Contact.getNote(contact.note, contact.note.size() - 1).first);
+            noteView.setText(Contact.getNote(contact.note, 0).first);
 
         noteButton.setOnClickListener(new OnClickListener() {
             @Override

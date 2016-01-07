@@ -76,7 +76,7 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
         holder.mView.findViewById(R.id.record_icon).setVisibility(contact.alwaysRecord ? View.VISIBLE : View.INVISIBLE);
 
         if (contact.note != null && contact.note.size() > 0) {
-            Pair<String, Long> pair = Contact.getNote(contact.note, contact.note.size() - 1);
+            Pair<String, Long> pair = Contact.getNote(contact.note, 0);
             ((TextView) holder.mView.findViewById(R.id.note_text_card)).setText(pair.first);
 
             Date date = new Date(pair.second);

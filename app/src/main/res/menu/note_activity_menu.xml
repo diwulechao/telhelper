@@ -13,4 +13,10 @@
         android:title="Always record"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/button_delete"
+        android:title="Delete"
+        android:visible="false"
+        app:showAsAction="always" />
+
 </menu>
