@@ -26,4 +26,10 @@
         android:title="Debug page"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/button_create_crash"
+        android:visible="false"
+        android:title="Crash the app"
+        app:showAsAction="never" />
+
 </menu>

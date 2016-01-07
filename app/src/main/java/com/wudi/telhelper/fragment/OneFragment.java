@@ -89,6 +89,10 @@ public class OneFragment extends Fragment {
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 return true;
+            case R.id.button_create_crash:
+                View v = null;
+                v.setOnClickListener(null);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
