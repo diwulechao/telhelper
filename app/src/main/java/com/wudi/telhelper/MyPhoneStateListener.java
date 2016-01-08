@@ -12,7 +12,7 @@ public class MyPhoneStateListener extends PhoneStateListener {
         if (TextUtils.isEmpty(incomingNumber)) return;
 
         Contact contact = StorageHelper.getContact(incomingNumber);
-        if (contact.ban) ViewUtils.rejectCall();
+        if (contact.ban && state == 1) ViewUtils.rejectCall(incomingNumber);
         else {
             if (state == 1) ViewUtils.createOverlay(MainApplication.context, incomingNumber);
             else if (state == 0) {

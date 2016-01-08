@@ -1,7 +1,11 @@
 package com.wudi.telhelper;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Binder;
@@ -14,6 +18,8 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+
+import com.wudi.telhelper.activity.NoteActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,7 +60,7 @@ public class ViewUtils {
         }
     }
 
-    public static void rejectCall() {
+    public static void rejectCall(String number) {
         try {
             String serviceManagerName = "android.os.ServiceManager";
             String serviceManagerNativeName = "android.os.ServiceManagerNative";
@@ -82,6 +88,22 @@ public class ViewUtils {
             telephonyEndCall = telephonyClass.getMethod("endCall");
             telephonyEndCall.invoke(telephonyObject);
 
+            if (!TextUtils.isEmpty(number)) {
+                // notification
+                NotificationManager mNotificationManager = (NotificationManager) MainApplication.context.getSystemService(Context.NOTIFICATION_SERVICE);
+                Intent intent = new Intent(MainApplication.context, NoteActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("number", number);
+
+                PendingIntent contentIntent = PendingIntent.getActivity(MainApplication.context, 0, intent, 0);
+                Notification notification = new Notification.Builder(MainApplication.context)
+                        .setContentTitle("Call rejected")
+                        .setContentText(number).setSmallIcon(R.drawable.close_icon)
+                        .setContentIntent(contentIntent).setWhen(System.currentTimeMillis()).setAutoCancel(true)
+                        .build();
+
+                mNotificationManager.notify((int) (System.currentTimeMillis() % 10000), notification);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

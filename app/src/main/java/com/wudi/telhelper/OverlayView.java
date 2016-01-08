@@ -36,12 +36,19 @@ public class OverlayView extends RelativeLayout {
         banButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                ViewUtils.rejectCall();
+                ViewUtils.rejectCall(null);
                 StorageHelper.banNumber(OverlayView.this.number, true);
 
                 banButton.setEnabled(false);
                 banButton.setTextColor(Color.GRAY);
                 banButton.setText("Baned");
+
+                MainApplication.handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ViewUtils.removeOverlay(MainApplication.context);
+                    }
+                }, 5000);
             }
         });
 
